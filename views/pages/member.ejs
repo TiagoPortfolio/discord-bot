@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <!-- LANDING PAGE -->
+  <div>
+    <div class="content-wrapper">
+      <!-- MAIN CONTENT -->
+      <div class="center outer">
+        <div class="inner">
+          <img class="logo lazyload" src="snaxkrew/imgs/snaxbanner.png" data-src="/imgs/snaxbanner.png" height="153" title="SnaxKrew" alt="SnaxKrew"/>
+        </div>
+
+        <div class="content-box" style="width: 50%">
+          <h2 class="section_title">SNAXKREW Profile</h2>
+          <table>
+            <tr>
+              <th>Avatar</th>
+              <th>Username</th>
+              <th>Messages Count</th>
+              <th>Characters Count</th>
+              <th>Valid Messages Count</th>
+              <th>Valid Characters Count</th>
+              <th>Seconds Muted</th>
+              <th>Seconds Unmuted</th>
+              <th>Voice Points</th>
+              <th>Week</th>
+              <th>Year</th>
+            </tr>
+            <% results.forEach(function(r) { %>
+              <tr>
+                <td><img class="avatar" src="<%= r.avatar %>"/></td>
+                <td><%= r.username %>#<%= r.discriminator %></td>
+                <td><%= r.messages_count %></td>
+                <td><%= r.characters_count %></td>
+                <td><%= r.valid_messages_count %></td>
+                <td><%= r.valid_characters_count %></td>
+                <td><%= r.seconds_muted %></td>
+                <td><%= r.seconds_unmuted %></td>
+                <td><%= r.voice_points %></td>
+                <td><%= r.week %></td>
+                <td><%= r.year %></td>
+              </tr>
+            <% }); %>
+          </table>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="content-box footer">
+          <h2 class="section_title">Join us on</h2>
+          <section class="social">
+            <a href="//discord.me/snax" target="_blank">
+              <img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/discord-small.svg" height="60" title="Discord" alt="Discord"/>
+            </a>
+            <a href="https://twitter.com/snaxkr3w" target="_blank">
+              <img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/twitter.svg" height="50" title="Twitter" alt="Twitter"/>
+            </a>
+            <a href="https://www.facebook.com/snaxgaming" target="_blank">
+              <img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/facebook.png" height="50" title="Facebook" alt="Facebook"/>
+            </a>
+            <a href="https://www.youtube.com/channel/UCqE1nXJBnNuZThoeNG9618Q/videos" target="_blank">
+              <img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/youtube.png" height="50" title="Youtube" alt="Youtube"/>
+            </a>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</body>
+</html>

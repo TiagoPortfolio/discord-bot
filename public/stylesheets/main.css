@@ -1,0 +1,28 @@
+table {
+  margin: 0 auto;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  color: black;
+}
+
+tbody {
+  background-color: #f5f1f1;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+img.avatar {
+  height: 56px;
+    width: 56px;
+    border-radius: 30px;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+	<div class="container" style="width: 50%">
+		<h2>Table users</h2>
+		<table>
+			<tr>
+				<th>Avatar</th>
+				<th>Username</th>
+				<th>Messages Count</th>
+				<th>Characters Count</th>
+				<th>Week</th>
+				<th>Year</th>
+				<th>Seconds Muted</th>
+				<th>Seconds Unmuted</th>
+				<th>Muted Timestamp (UTC)</th>
+				<th>Unmuted Timestamp (UTC)</th>
+				<th>Last Message Timestamp (UTC)</th>
+			</tr>
+			<% results.forEach(function(r) { %>
+				<tr>
+					<td><img class="avatar" src="<%= r.avatar %>"/></td>
+					<td><%= r.username %>#<%= r.discriminator %></td>
+					<td><%= r.messages_count %></td>
+					<td><%= r.characters_count %></td>
+					<td><%= r.week %></td>
+					<td><%= r.year %></td>
+					<td><%= r.seconds_muted %></td>
+					<td><%= r.seconds_unmuted %></td>
+					<td><%= r.muted_timestamp %></td>
+					<td><%= r.unmuted_timestamp %></td>
+					<td><%= r.timestamp %></td>
+				</tr>
+			<% }); %>
+		</table>
+	</div>
+
+</body>
+</html>

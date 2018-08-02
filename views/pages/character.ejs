@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ../partials/header.ejs %>
+</head>
+
+<body>
+	<!-- LANDING PAGE -->
+	<div>
+		<div class="content-wrapper">
+			<!-- MAIN CONTENT -->
+			<div class="center outer">
+				<div class="inner">
+					<img class="logo lazyload" src="snaxkrew/imgs/snaxbanner.png" data-src="/imgs/snaxbanner.png" height="153" title="SnaxKrew" alt="SnaxKrew"/>
+				</div>
+
+				<div class="content-box" style="width: 50%">
+					<h2 class="section_title">SNAX CLUB Character</h2>
+					<% if (character.length) { %>
+						<h3><%= character.username %></h3>
+						<form>
+							<div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Level</span>
+									<span><%= character.level %></span>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">XP</span>
+									<span><%= character.level %> / <%= (15 * 2^(character.level)) %></span>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">HP</span>
+									<span id="hp"><%= character.hp * 2 %></span>
+
+									<% if (character.stats.points) { %>
+										<div>
+											<!-- Add arrow plus sign image -->
+											<input type="text" value="0" name="hpPoint">
+											<img id="addHPPoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+										</div>
+									<% } %>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Attack</span>
+									<span id="attack"><%= 5 + character.attack %></span>
+									
+									<% if (character.stats.points) { %>
+										<div>
+											<!-- Add arrow plus sign image -->
+											<input type="text" value="0" name="attackPoint">
+											<img id="addAttackPoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+										</div>
+									<% } %>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Defense</span>
+									<span id="defense"><%= 20 + character.defense %></span>
+									
+									<% if (character.stats.points) { %>
+										<div>
+											<!-- Add arrow plus sign image -->
+											<input type="text" value="0" name="defensePoint">
+											<img id="addDefensePoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+										</div>
+									<% } %>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Dodge</span>
+									<span id="dodge"><%= 10 + character.dodge %></span>
+									
+									<% if (character.stats.points) { %>
+										<div>
+											<!-- Add arrow plus sign image -->
+											<input type="text" value="0" name="dodgePoint">
+											<img id="addDodgePoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+										</div>
+									<% } %>
+								</div>
+							</div>
+
+							<% if (character.stats.points) { %>
+								<div>
+									<span>Stats Points</span>
+									<span id="statsPoints">character.stats.points</span>
+								</div>
+							<% } %>
+						</form>
+					<% } else { %>
+						<h3>Create your character</h3>
+						<h4><%= character.username %></h4>
+						<form>
+							<div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Level 1</span>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">XP</span>
+									<span>0 / 10</span>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">HP</span>
+									<span id="hp">14</span>
+									<!-- 2 HP per point -->
+									<div>
+										<!-- Add arrow plus sign image -->
+										<input type="text" value="0" name="hpPoint">
+										<img id="addHPPoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+									</div>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Attack</span>
+									<span id="attack">5</span>
+									<!-- 1 attack per point -->
+									<div>
+										<!-- Add arrow plus sign image -->
+										<input type="text" value="0" name="attackPoint">
+										<img id="addAttackPoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+									</div>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Defense</span>
+									<span id="defense">20</span>
+									<!-- 20% chance to reduce damage by 25%. 1 percent per point -->
+									<div>
+										<!-- Add arrow plus sign image -->
+										<input type="text" value="0" name="defensePoint">
+										<img id="addDefensePoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+									</div>
+								</div>
+								<div>
+									<img class="lazyload" src="/imgs/snaxbanner.png" data-src="" />
+									<span class="stat">Dodge</span>
+									<span id="dodge">10</span>
+									<!-- 10% chance to dodge an attack. 1 percent per point -->
+									<div>
+										<!-- Add arrow plus sign image -->
+										<input type="text" value="0" name="dodgePoint">
+										<img id="addDodgePoint" class="lazyload addStat" src="/imgs/snaxbanner.png" data-src="" />
+									</div>
+								</div>
+							</div>
+							<div>
+								<span>Stats Points</span>
+								<span id="statsPoints">5</span>
+							</div>
+						</form>
+					<% } %>
+				</div>
+
+				<!-- FOOTER -->
+				<div class="content-box footer">
+					<h2 class="section_title">Join us on</h2>
+					<section class="social">
+						<a href="//discord.me/snax" target="_blank">
+							<img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/discord-small.svg" height="60" title="Discord" alt="Discord"/>
+						</a>
+						<a href="https://twitter.com/snaxkr3w" target="_blank">
+							<img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/twitter.svg" height="50" title="Twitter" alt="Twitter"/>
+						</a>
+						<a href="https://www.facebook.com/snaxgaming" target="_blank">
+							<img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/facebook.png" height="50" title="Facebook" alt="Facebook"/>
+						</a>
+						<a href="https://www.youtube.com/channel/UCqE1nXJBnNuZThoeNG9618Q/videos" target="_blank">
+							<img class="lazyload" src="/imgs/snaxbanner.png" data-src="/imgs/youtube.png" height="50" title="Youtube" alt="Youtube"/>
+						</a>
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
