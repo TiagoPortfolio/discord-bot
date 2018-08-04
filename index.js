@@ -1,3 +1,4 @@
+<script>
 var express = require('express');
 var app = express();
 var http = require('http'),
@@ -443,53 +444,60 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 // Insert new user in database
 client.on('guildMemberAdd', member => {
+
+  if (member.user.id == 475223635792101387 || member.user.id == 475013414566232094) {
+  	member.ban(7)
+  	.then(() => console.log('----____-----____------Banned ' + member.user.username + ' ----____---____-))
+  	.catch(console.error);
+  } else {
   var date = new Date();
   var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
   var queryParams = [
-  	member.user.id, // discordID
-  	member.user.username, // username
-  	member.user.discriminator, // discriminator
-  	0, // messages_count
-  	0, // valid_messages_count
-  	0, // characters_count
-  	utils.getWeekOfYear(dateUTC), // week of the year
-  	dateUTC.getFullYear(), // year
-  	member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60')
+    member.user.id, // discordID
+    member.user.username, // username
+    member.user.discriminator, // discriminator
+    0, // messages_count
+    0, // valid_messages_count
+    0, // characters_count
+    utils.getWeekOfYear(dateUTC), // week of the year
+    dateUTC.getFullYear(), // year
+    member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60')
   ];
 
   //Connect to database to upsert data about user number of messages and characters
   pool
   .query(
-  	'INSERT INTO users (discord_id, username, discriminator, messages_count, valid_messages_count, characters_count, week, year, avatar) ' +
-  	'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ' +
-  	'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
-  	'avatar = $7; ',
-  	queryParams, (err, res) => {
-  		if (err) {
-  			console.log("Error on UPSERT data for registerMessage: " + err);
-  		}
-  	}
+    'INSERT INTO users (discord_id, username, discriminator, messages_count, valid_messages_count, characters_count, week, year, avatar) ' +
+    'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ' +
+    'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
+    'avatar = $7; ',
+    queryParams, (err, res) => {
+        if (err) {
+            console.log("Error on UPSERT data for registerMessage: " + err);
+        }
+    }
   );
 
-  	// Add Initiate role
-  	member.addRole('301249217488486410');
+    // Add Initiate role
+    member.addRole('301249217488486410');
 
-	const channel = guild.channels.find('name', 'general-chat');
-	// Do nothing if the channel wasn't found on this server
-	if (!channel) {
-		return;
-	}
+    const channel = guild.channels.find('name', 'general-chat');
+    // Do nothing if the channel wasn't found on this server
+    if (!channel) {
+        return;
+    }
 
-	let richEmbed = new Discord.RichEmbed();
+    let richEmbed = new Discord.RichEmbed();
 
-	richEmbed.setColor(0x0074e8);
-	richEmbed.setTitle('Welcome ' + member.user.username + '!');
-	richEmbed.setDescription('<@' + member.user.id + '> ' + 'just joined **SNAXKREW**!\nEverybody say hi :wave:\nYou begin your adventure in **SNAXKREW** with :beginner: **Initiate** role!\nMake sure you read *#welcome-and-rules* channel');
-	richEmbed.setThumbnail(member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60'));
+    richEmbed.setColor(0x0074e8);
+    richEmbed.setTitle('Welcome ' + member.user.username + '!');
+    richEmbed.setDescription('<@' + member.user.id + '> ' + 'just joined **SNAXKREW**!\nEverybody say hi :wave:\nYou begin your adventure in **SNAXKREW** with :beginner: **Initiate** role!\nMake sure you read *#welcome-and-rules* channel');
+    richEmbed.setThumbnail(member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60'));
 
-	channel.send(
-		richEmbed
-	).catch(err => console.log(err));
+    channel.send(
+        richEmbed
+    ).catch(err => console.log(err));
+    }
 });
 
 // Log members that left
@@ -541,3 +549,5 @@ client.login(token);
 // 		}
 // });
 
+
+</script>
