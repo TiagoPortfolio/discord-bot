@@ -145,7 +145,7 @@ client.on('ready', () => {
 		console.log("GUILD NOT FOUND YET");
 		console.log(guild);
 	}
-	cron.runCronFunctions(pool, guild, Discord);;
+	cron.runCronFunctions(pool, guild, Discord);
 	console.log('Snax-Bonobot is ready!');
 });
 
@@ -444,10 +444,10 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 // Insert new user in database
 client.on('guildMemberAdd', member => {
 
-	if (true) {
+	if (member.user.username.indexOf('(tag)') !== -1) {
 		member.ban()
-	  .then(() => console.log('***Banned ' + member.user.username + '***'))
-	  .catch(console.error);
+	  	.then(() => console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***'))
+	  	.catch(console.error);
 	} else {
 	  var date = new Date();
 	  var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
