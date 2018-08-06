@@ -1,39 +1,41 @@
-# node-js-getting-started
+# Custom Made Discord Bot
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+This is a custom Discord bot made specifically for a server.
 
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+## Features
 
-## Running Locally
+- ### Tracks User Activity
+  - Messages Sent in Text Channels;
+  - Characters Sent in Text Channels;
+  - Seconds Muted in Voice Channels;
+  - Seconds Unmuted in Voice Channels.
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
+- ### Points System
+  - Gives points to members for each message and character sent in text channel with anti-spam rules;
+  - Gives points to members for each minute spent in voice channels. Gives more points to members unmuted and with another members in same voice channel to promote group activity;
+  - At the start of each Month, the bot automatically announces the most active users of the last month and gives awards.
 
-```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
+- ### Sounds System
+  - Members can type a command in a specific channel to run bot commands to play a sound. The bot joins the voice channel the member is in, plays the sound and leaves. There are 90+ sounds available! 
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+- ### Stats System
+  - Members can type commands to check most active users in voice or text channel per Week, Month or since the bot joined the server.
 
-## Deploying to Heroku
+- ### Dailies System
+  - Members can run a daily command to receive a small ammount of activity points.
 
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-or
+- ### Reputation System
+  - Members can give a limited ammount of reputation to other members per day.
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+- ### Profiles
+  - Each member has its own profile with avatar and several stats.
 
-## Documentation
+- ### Memes
+  - The bot logs memes each 12 hours to a specific channel. The memes are fetched from subreddit in reddit.com.
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+- ### Help System
+  - Whenever a member runs an unrecognizable command, the bot suggest running the help command with everything the member needs to know.
 
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+## Coded and Deployed with
+
+NodeJS and Heroku
