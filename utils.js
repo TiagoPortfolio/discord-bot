@@ -1,4 +1,4 @@
-var fs = require('fs'),
+﻿var fs = require('fs'),
 	https = require('https'),
 	request = require('request'),
 	imgur = require('imgur'),
@@ -135,10 +135,11 @@ module.exports = {
 			}
 		}
 
-		var query = 'SELECT discord_id, username, SUM(valid_messages_count) as valid_messages_count, SUM(valid_characters_count) as valid_characters_count, ' +
-								'SUM(seconds_muted) as seconds_muted, SUM(seconds_unmuted) as seconds_unmuted, SUM(voice_points) as voice_points, ' +
-								'SUM(dailies) as dailies, SUM(reputation) as reputation ' +
-								'FROM users WHERE ';
+		var query =
+			'SELECT discord_id, username, SUM(valid_messages_count) as valid_messages_count, SUM(valid_characters_count) as valid_characters_count, ' +
+			'SUM(seconds_muted) as seconds_muted, SUM(seconds_unmuted) as seconds_unmuted, SUM(voice_points) as voice_points, ' +
+			'SUM(dailies) as dailies, SUM(reputation) as reputation ' +
+			'FROM users WHERE';
 		var queryParams = [];
 
 		if (queryLabel === 'month') { // Month (last 4 weeks)
@@ -1295,7 +1296,7 @@ module.exports = {
 		// Check if it is the first day of the Month
 		date.setHours(date.getHours() - 24);
 		if (month == date.getMonth()) {
-			mention = true;
+			mention = false
 		}
 
 		// Stop logging to debug channel
@@ -1745,6 +1746,8 @@ module.exports = {
 			// Create a message collector
 			const collector = new Discord.MessageCollector(channel, filter, { time: 15000 });
 			collector.on('collect', (m) => {
+				console.log("Received join from: " + m.author.username);
+				console.log(racers.indexOf(m.author.username) === -1);
 				if (racers.indexOf(m.author.username) === -1) {
 					if (racers.length < players.length) {
 						racers.push(m.author.username);

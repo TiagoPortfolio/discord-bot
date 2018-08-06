@@ -1,4 +1,3 @@
-<script>
 var express = require('express');
 var app = express();
 var http = require('http'),
@@ -146,7 +145,7 @@ client.on('ready', () => {
 		console.log("GUILD NOT FOUND YET");
 		console.log(guild);
 	}
-	cron.runCronFunctions(pool, guild, Discord);
+	cron.runCronFunctions(pool, guild, Discord);;
 	console.log('Snax-Bonobot is ready!');
 });
 
@@ -239,8 +238,8 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 	// User leaves voice channel or joins AFK channel or user switched mute state. Ignore mute state in AFK channel
 	if (((oldUserSelfMute !== newUserSelfMute) && (oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id)) ||
-	    (oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id && newUserChannel === undefined ||
-	    (oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id && newUserChannel.guild.afkChannelID === newUserChannel.id))) {
+		(oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id && newUserChannel === undefined ||
+		(oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id && newUserChannel.guild.afkChannelID === newUserChannel.id))) {
 		// Calculate seconds in voice channel and insert in database
 		if (oldUserSelfMute !== newUserSelfMute) {
 			console.log("\n-------------------------------------");
@@ -255,68 +254,68 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 	  // Update muted or unmuted timestamp
 	  if (muteStateChanged) {
-	  	var params = queryParams.slice();
-	    pool.query(
-	    	'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
-	    	(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
+		var params = queryParams.slice();
+		pool.query(
+			'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
+			(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
 				'VALUES ($1, $2, $3, $4, $5, $6, $7, timezone(\'utc\'::text, now())) ' +
 				'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
 				(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 				'= timezone(\'utc\'::text, now());',
 				params, (err, res) => {
-          if (err) {
-            console.error('Error committing transaction 1', err.stack);
-            console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
-	    	(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
+		  if (err) {
+			console.error('Error committing transaction 1', err.stack);
+			console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
+			(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
 				'VALUES ($1, $2, $3, $4, $5, $6, $7, timezone(\'utc\'::text, now())) ' +
 				'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
 				(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 				'= timezone(\'utc\'::text, now());');
-            console.log(params);
+			console.log(params);
 						console.log(newMember.user.username);
-          }
-		    }
+		  }
+			}
 		  );
 	  }
 
 		pool.connect((err, client, done) => {
 		  const shouldAbort = (err) => {
-		    if (err) {
-		      console.error('Error in transaction', err.stack);
+			if (err) {
+			  console.error('Error in transaction', err.stack);
 					console.log(newMember.user.username);
-		      client.query('ROLLBACK', (err) => {
-		        if (err) {
-		          console.error('Error rolling back client', err.stack);
+			  client.query('ROLLBACK', (err) => {
+				if (err) {
+				  console.error('Error rolling back client', err.stack);
 							console.log(newMember.user.username);
-		        }
-		        // Release the client back to the pool
-		        done();
-		      });
-		    }
-		    return !!err;
+				}
+				// Release the client back to the pool
+				done();
+			  });
+			}
+			return !!err;
 		  }
 
 
 		  // Revert newUserSelfMute value if user changed mute state to register data from previous mute state
 		  // (if mute state changed from muted to unmuted we want to register data from muted which is not equal to newUserSelfMute)
 		  if (muteStateChanged) {
-		  	newUserSelfMute = !newUserSelfMute;
+			newUserSelfMute = !newUserSelfMute;
 		  }
 
 		  client.query('BEGIN', (err) => {
-		    if (shouldAbort(err)) {
-		    	return;
-		    }
+			if (shouldAbort(err)) {
+				return;
+			}
 
-		    client.query(
-		    	'SELECT ' +
-		    	(newUserSelfMute ? ' muted_timestamp::timestamp ' : ' unmuted_timestamp::timestamp ') +
-		    	'FROM users WHERE discord_id = $1 AND ' + (newUserSelfMute ? ' muted_timestamp ' : ' unmuted_timestamp ') +
-		    	'IS NOT NULL ORDER BY (year, week) DESC LIMIT 1',
+			client.query(
+				'SELECT ' +
+				(newUserSelfMute ? ' muted_timestamp::timestamp ' : ' unmuted_timestamp::timestamp ') +
+				'FROM users WHERE discord_id = $1 AND ' + (newUserSelfMute ? ' muted_timestamp ' : ' unmuted_timestamp ') +
+				'IS NOT NULL ORDER BY (year, week) DESC LIMIT 1',
 					[queryParams[0]], (err, res) => {
-			      if (shouldAbort(err)) {
-			      	return;
-			      } else if (res.rows.length === 0) {
+				  if (shouldAbort(err)) {
+					return;
+				  } else if (res.rows.length === 0) {
 							console.log("COULD NOT SELECT muted or unmuted timestamp from users");
 							console.log(newMember.user.username);
 							var totalSeconds = 0;
@@ -339,38 +338,38 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 						console.log("dateUTC (now): " + dateUTC);
 						console.log("totalSeconds: " + totalSeconds);
 					
-			      client.query(
-	            	'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year, ' +
-	            	(newUserSelfMute ? 'seconds_muted, muted_timestamp' : 'seconds_unmuted, unmuted_timestamp') + ') ' +
-         			'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, timezone(\'utc\'::text, now())) ' +
-         			'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
-         			(newUserSelfMute ? 'seconds_muted = users.seconds_muted ' : 'seconds_unmuted = users.seconds_unmuted ') +
-         			' + $8, ' +
-         			(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
+				  client.query(
+					'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year, ' +
+					(newUserSelfMute ? 'seconds_muted, muted_timestamp' : 'seconds_unmuted, unmuted_timestamp') + ') ' +
+					'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, timezone(\'utc\'::text, now())) ' +
+					'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
+					(newUserSelfMute ? 'seconds_muted = users.seconds_muted ' : 'seconds_unmuted = users.seconds_unmuted ') +
+					' + $8, ' +
+					(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 							'= timezone(\'utc\'::text, now());',
 							queryParams, (err, res) => {
-			        if (shouldAbort(err)) {
-			        	return;
-			        }
-			        client.query('COMMIT', (err) => {
-			          if (err) {
-			            console.error('Error committing transaction', err.stack);
-			            console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year, ' +
-			            	(newUserSelfMute ? 'seconds_muted, muted_timestamp' : 'seconds_unmuted, unmuted_timestamp') + ') ' +
-		         			'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, timezone(\'utc\'::text, now())) ' +
-		         			'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
-		         			(newUserSelfMute ? 'seconds_muted = users.seconds_muted ' : 'seconds_unmuted = users.seconds_unmuted ') +
-		         			' + $8, ' +
-		         			(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
+					if (shouldAbort(err)) {
+						return;
+					}
+					client.query('COMMIT', (err) => {
+					  if (err) {
+						console.error('Error committing transaction', err.stack);
+						console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year, ' +
+							(newUserSelfMute ? 'seconds_muted, muted_timestamp' : 'seconds_unmuted, unmuted_timestamp') + ') ' +
+							'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, timezone(\'utc\'::text, now())) ' +
+							'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
+							(newUserSelfMute ? 'seconds_muted = users.seconds_muted ' : 'seconds_unmuted = users.seconds_unmuted ') +
+							' + $8, ' +
+							(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 									'= timezone(\'utc\'::text, now());');
-			            console.log(queryParams);
-			          }
-			          done();
-			        });
-			      });
-			    }
+						console.log(queryParams);
+					  }
+					  done();
+					});
+				  });
+				}
 			  );
-	    });
+		});
 		});
 
 		// User connects to a voice channel or joins a voice channel coming from AFK channel
@@ -389,55 +388,55 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 		pool.connect((err, client, done) => {
 		  const shouldAbort = (err) => {
-		    if (err) {
-		      console.error('Error in transaction', err.stack);
+			if (err) {
+			  console.error('Error in transaction', err.stack);
 			console.log(newMember.user.username);
-		      client.query('ROLLBACK', (err) => {
-		        if (err) {
-		          console.error('Error rolling back client', err.stack);
+			  client.query('ROLLBACK', (err) => {
+				if (err) {
+				  console.error('Error rolling back client', err.stack);
 			console.log(newMember.user.username);
-		        }
-		        // Release the client back to the pool
-		        done();
-		      });
-		    }
-		    return !!err;
+				}
+				// Release the client back to the pool
+				done();
+			  });
+			}
+			return !!err;
 		  }
 
 		  client.query('BEGIN', (err) => {
-		    if (shouldAbort(err)) {
-		    	return;
-		    }
+			if (shouldAbort(err)) {
+				return;
+			}
 
-		    client.query(
-		    	'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
-		    	(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
+			client.query(
+				'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
+				(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
 					'VALUES ($1, $2, $3, $4, $5, $6, $7, timezone(\'utc\'::text, now())) ' +
 					'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
 					(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 					'= timezone(\'utc\'::text, now());',
 					queryParams, (err, res) => {
-			      if (shouldAbort(err)) {
-			      	return;
-			      }
+				  if (shouldAbort(err)) {
+					return;
+				  }
 
-		        client.query('COMMIT', (err) => {
-		          if (err) {
-		            console.error('Error committing transaction', err.stack);
-		            console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
-		    	(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
+				client.query('COMMIT', (err) => {
+				  if (err) {
+					console.error('Error committing transaction', err.stack);
+					console.log('INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year ' +
+				(newUserSelfMute ? ', muted_timestamp ' : ', unmuted_timestamp ') + ') ' +
 					'VALUES ($1, $2, $3, $4, $5, $6, $7, timezone(\'utc\'::text, now())) ' +
 					'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
 					(newUserSelfMute ? 'muted_timestamp ' : 'unmuted_timestamp ') +
 					'= timezone(\'utc\'::text, now());');
 					console.log(queryParams);
 								console.log(newMember.user.username);
-		          }
-		          done();
-		        });
-			    }
+				  }
+				  done();
+				});
+				}
 			  );
-	    });
+		});
 		});
 	}
 });
@@ -445,59 +444,59 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 // Insert new user in database
 client.on('guildMemberAdd', member => {
 
-  if (member.user.id == 475223635792101387 || member.user.id == 475013414566232094) {
-  	member.ban(7)
-  	.then(() => console.log('----____-----____------Banned ' + member.user.username + ' ----____---____-))
-  	.catch(console.error);
-  } else {
-  var date = new Date();
-  var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-  var queryParams = [
-    member.user.id, // discordID
-    member.user.username, // username
-    member.user.discriminator, // discriminator
-    0, // messages_count
-    0, // valid_messages_count
-    0, // characters_count
-    utils.getWeekOfYear(dateUTC), // week of the year
-    dateUTC.getFullYear(), // year
-    member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60')
-  ];
+	if (true) {
+		member.ban()
+	  .then(() => console.log('***Banned ' + member.user.username + '***'))
+	  .catch(console.error);
+	} else {
+	  var date = new Date();
+	  var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+	  var queryParams = [
+		member.user.id, // discordID
+		member.user.username, // username
+		member.user.discriminator, // discriminator
+		0, // messages_count
+		0, // valid_messages_count
+		0, // characters_count
+		utils.getWeekOfYear(dateUTC), // week of the year
+		dateUTC.getFullYear(), // year
+		member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60')
+	  ];
 
-  //Connect to database to upsert data about user number of messages and characters
-  pool
-  .query(
-    'INSERT INTO users (discord_id, username, discriminator, messages_count, valid_messages_count, characters_count, week, year, avatar) ' +
-    'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ' +
-    'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
-    'avatar = $7; ',
-    queryParams, (err, res) => {
-        if (err) {
-            console.log("Error on UPSERT data for registerMessage: " + err);
-        }
-    }
-  );
+	  //Connect to database to upsert data about user number of messages and characters
+	  pool
+	  .query(
+		'INSERT INTO users (discord_id, username, discriminator, messages_count, valid_messages_count, characters_count, week, year, avatar) ' +
+		'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ' +
+		'ON CONFLICT (discord_id, week, year) DO UPDATE SET ' +
+		'avatar = $7; ',
+		queryParams, (err, res) => {
+			if (err) {
+				console.log("Error on UPSERT data for registerMessage: " + err);
+			}
+		}
+	  );
 
-    // Add Initiate role
-    member.addRole('301249217488486410');
+		// Add Initiate role
+		member.addRole('301249217488486410');
 
-    const channel = guild.channels.find('name', 'general-chat');
-    // Do nothing if the channel wasn't found on this server
-    if (!channel) {
-        return;
-    }
+		const channel = guild.channels.find('name', 'general-chat');
+		// Do nothing if the channel wasn't found on this server
+		if (!channel) {
+			return;
+		}
 
-    let richEmbed = new Discord.RichEmbed();
+		let richEmbed = new Discord.RichEmbed();
 
-    richEmbed.setColor(0x0074e8);
-    richEmbed.setTitle('Welcome ' + member.user.username + '!');
-    richEmbed.setDescription('<@' + member.user.id + '> ' + 'just joined **SNAXKREW**!\nEverybody say hi :wave:\nYou begin your adventure in **SNAXKREW** with :beginner: **Initiate** role!\nMake sure you read *#welcome-and-rules* channel');
-    richEmbed.setThumbnail(member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60'));
+		richEmbed.setColor(0x0074e8);
+		richEmbed.setTitle('Welcome ' + member.user.username + '!');
+		richEmbed.setDescription('<@' + member.user.id + '> ' + 'just joined **SNAXKREW**!\nEverybody say hi :wave:\nYou begin your adventure in **SNAXKREW** with :beginner: **Initiate** role!\nMake sure you read *#welcome-and-rules* channel');
+		richEmbed.setThumbnail(member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60'));
 
-    channel.send(
-        richEmbed
-    ).catch(err => console.log(err));
-    }
+		channel.send(
+			richEmbed
+		).catch(err => console.log(err));
+	}
 });
 
 // Log members that left
@@ -549,5 +548,3 @@ client.login(token);
 // 		}
 // });
 
-
-</script>

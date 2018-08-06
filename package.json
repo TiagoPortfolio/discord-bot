@@ -18,6 +18,7 @@
     "ejs": "2.5.6",
     "express": "^4.15.2",
     "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^3.2.2-3",
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "images": "^3.0.1",
