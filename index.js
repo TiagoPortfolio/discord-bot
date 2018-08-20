@@ -501,6 +501,10 @@ client.on('guildMemberAdd', member => {
 
 // Log members that left
 client.on('guildMemberRemove', member => {
+	str = JSON.stringify(member.user, null, 4); // beautiful indented output.
+	console.log("****** USER LEFT ******");
+	console.log(str);
+	console.log("****** USER LEFT ******");
 	const channel = member.guild.channels.find('name', 'snax-bonobot');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) {
