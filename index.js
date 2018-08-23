@@ -443,7 +443,10 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 // Insert new user in database
 client.on('guildMemberAdd', member => {
-
+	str = JSON.stringify(member.user, null, 4); // beautiful indented output.
+	console.log("****** USER JOINED ******");
+	console.log(str);
+	console.log("****** USER JOINED ******");
 	if (member.user.username.indexOf('(tag)') !== -1) {
 		member.ban()
 	  	.then(() => console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***'))
