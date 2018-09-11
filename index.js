@@ -141,9 +141,8 @@ app.get('/db', function (request, response) {
 client.on('ready', () => {
 	client.user.setGame('!snax help');
 	guild = client.guilds.get('83034666034003968'); // Get SNAXKREW server
-	while (guild == '') {
-		console.log("GUILD NOT FOUND YET");
-		console.log(guild);
+	while (guild == '' && !guild.available) {
+		console.log("GUILD NOT AVAILABLE YET");
 	}
 	cron.runCronFunctions(pool, guild, Discord);
 	console.log('Snax-Bonobot is ready!');
