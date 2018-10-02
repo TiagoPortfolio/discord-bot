@@ -1,6 +1,6 @@
 var config = {};
 
-config.token = '';
+config.token = 'MzUyNTU0MjcyMDY1NTg1MTUy.DkdjnA.7EQbWHx0W1WUXOl19kY-ShbvUIA';
 
 // Used in processSoundCommand. botAvailable = false if is playing a sound
 config.botAvailable = true;
@@ -98,6 +98,7 @@ config.popularGames = [
 	'Tabletop Simulator',
 	'Overwatch',
 	'PUBG',
+	'MONSTER HUNTER: WORLD',
 	'Atlas Reactor',
 	'Rocket League'
 ];

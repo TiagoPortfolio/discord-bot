@@ -1684,7 +1684,7 @@ module.exports = {
 								// Add http when image starts with // to avoid malformed urls
 								streamImage = streamImage.replace(/^\/\/?/i, "https://");
 
-								if(streamImage.length) {
+								if (streamImage.length) {
 									embed.setImage(streamImage);
 								}
 								channel.send({

@@ -373,18 +373,6 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 		// User connects to a voice channel or joins a voice channel coming from AFK channel
 	}	else if ((oldUserChannel === undefined || (oldUserChannel.guild.afkChannelID === oldUserChannel.id)) && newUserChannel !== undefined && newUserChannel.guild.afkChannelID !== newUserChannel.id) {
-		// Send message to general channel when top member of the Month in voce channels joins a voice channel
-		// if (newMember.user.username == config.topMembers.voice) {
-		// 	var random = Math.floor(Math.random() * 50);
-		// 	if (random < 11) {
-		// 		var generalChannel = guild.channels.find('name', 'general-chat');
-		// 		// var generalChannel = guild.channels.find('name', 'snax-bonobot');
-		// 		generalChannel.send(
-		// 			"Our most active member in :microphone2: **Voice Chat** :microphone2: last Month, **" + newMember.user.username + "**, just joined " + newUserChannel.name + " voice channel!! Join and say hi :wave:"
-		// 		);
-		// 	}
-		// }
-
 		pool.connect((err, client, done) => {
 		  const shouldAbort = (err) => {
 			if (err) {
@@ -442,7 +430,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 // Insert new user in database
 client.on('guildMemberAdd', member => {
-	str = JSON.stringify(member.user, null, 4); // beautiful indented output.
+	str = JSON.stringify(member.user, null, 4); // indented output.
 	console.log("****** USER JOINED ******");
 	console.log(str);
 	console.log("****** USER JOINED ******");
@@ -503,21 +491,48 @@ client.on('guildMemberAdd', member => {
 
 // Log members that left
 client.on('guildMemberRemove', member => {
-	str = JSON.stringify(member.user, null, 4); // beautiful indented output.
+	str = JSON.stringify(member.user, null, 4); // indented output.
 	console.log("****** USER LEFT ******");
 	console.log(str);
 	console.log("****** USER LEFT ******");
-	const channel = member.guild.channels.find('name', 'snax-bonobot');
+
+	const generalChannel = member.guild.channels.find('name', 'general-chat');
+	const botChannel = member.guild.channels.find('name', 'snax-bonobot');
+
 	// Do nothing if the channel wasn't found on this server
-	if (!channel) {
+	if (!botChannel || !generalChannel) {
 		return;
 	}
+
+	// Edit welcome message after user leaves the guild
+	generalChannel.fetchMessages()
+		.then(messages => {
+			messages.filter(function(message) {
+				if (typeof message.embeds[0] !== "undefined") {
+					if (message.embeds[0].title == ('Welcome ' + member.user.username + '!')) {
+						let richEmbed = new Discord.RichEmbed();
+
+						richEmbed.setColor(0x0074e8);
+						richEmbed.setTitle('Welcome ' + member.user.username + '!');
+						richEmbed.setDescription(
+							'Aaaaaaaannnnd he\'s gone :wave:\n' +
+							":skull: R.I.P. " + member.joinedAt.getDate() + " " + member.joinedAt.toLocaleString('en-us', { month: "long" }) + " " + member.joinedAt.getFullYear() + " - " + date.getDate() + " " + date.toLocaleString('en-us', { month: "long" }) + " " + date.getFullYear()
+						);
+						richEmbed.setThumbnail(member.user.displayAvatarURL.replace('size=2048', 'width=60&height=60'));
+
+						message.edit(richEmbed);
+					}
+				}
+			});
+		})
+		.catch(console.error);
 		
+	// Log user leaving in bot channel
 	const date = new Date();
 	const memberRole = utils.getMemberRole(member);
 	const message = '**' + member.user.username + "**" + (!Object.keys(memberRole).length ? ' without any activity role ' : " with **" + memberRole.emoji + memberRole.name + "** as highest role ") + "just left the server! <:feelsbadman:284396022682222592>\n" +
-					"R.I.P. " + member.joinedAt.getDate() + " " + member.joinedAt.toLocaleString('en-us', { month: "long" }) + " " + member.joinedAt.getFullYear() + " - " + date.getDate() + " " + date.toLocaleString('en-us', { month: "long" }) + " " + date.getFullYear();
-	channel.send(message);
+					":skull: R.I.P. " + member.joinedAt.getDate() + " " + member.joinedAt.toLocaleString('en-us', { month: "long" }) + " " + member.joinedAt.getFullYear() + " - " + date.getDate() + " " + date.toLocaleString('en-us', { month: "long" }) + " " + date.getFullYear();
+	botChannel.send(message);
 });
 
 // Check if user started streaming

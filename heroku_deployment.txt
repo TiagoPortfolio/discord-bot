@@ -1,0 +1,90 @@
+//If you need to login
+heroku login
+
+//Clone a project
+git clone https://github.com/heroku/node-js-getting-started.git
+cd node-js-getting-started
+
+//Creates the app on Heroku with a random name
+heroku create
+
+//Deploys the code to Heroku
+git push heroku master
+
+//Creates an app instance
+heroku ps:scale web=1
+//Or restart
+heroku restart
+
+//Opens production app in browser
+heroku open
+
+//View logs
+heroku logs --tail
+
+//This text is in the procfile and says the command to be executed to start the app
+web:node index.js
+
+//Install dependencies
+npm install
+
+//Run the app locally (localhost:5000)
+heroku local web
+
+//Add a dependency for cool-ascii-faces in package.json
+npm install --save --save-exact cool-ascii-faces
+
+//Authorize the bot into Discrod Channel/Server
+https://discordapp.com/oauth2/authorize?client_id=352554272065585152&scope=bot
+
+//Connect to database
+heroku pg:psql
+
+// Connect directly to machine
+heroku bash run
+
+CREATE TABLE users (
+  discord_id bigint NOT NULL,
+  username varchar(40) NOT NULL,
+  discriminator smallint NOT NULL,
+  avatar text DEFAULT '' NOT NULL,
+  week smallint NOT NULL,
+  year smallint NOT NULL,
+  messages_count bigint default 1 NOT NULL,
+  valid_messages_count bigint default 1 NOT NULL,
+  characters_count bigint NOT NULL,
+  valid_characters_count bigint DEFAULT 0 NOT NULL,
+  seconds_muted bigint DEFAULT 0 NOT NULL,
+  seconds_unmuted bigint DEFAULT 0 NOT NULL,
+  muted_timestamp timestamp without time zone default NULL,
+  unmuted_timestamp timestamp without time zone default NULL,
+  voice_points float DEFAULT 0 NOT NULL,
+  dailies bigint DEFAULT 0 NOT NULL,
+  dailies_timestamp timestamp without time zone default NULL,
+  reputation integer DEFAULT 0 NOT NULL,
+  reputation_sent json DEFAULT NULL,
+  reputation_timestamp timestamp without time zone default NULL,
+  timestamp timestamp without time zone default (now() at time zone 'utc'),
+  PRIMARY KEY(discord_id, week, year)
+);
+
+CREATE TABLE snaxclub_battles (
+  battle_id serial NOT NULL,
+  battle_info json DEFAULT NULL,
+  player1_discord_id bigint NOT NULL,
+  player2_discord_id bigint NOT NULL,
+  player1_code varchar(5) NOT NULL,
+  player2_code varchar(5) NOT NULL,
+  battle_active boolean DEFAULT TRUE,
+  PRIMARY KEY(battle_id)
+);
+
+CREATE TABLE snaxclub_players (
+  player_discord_id bigint NOT NULL,
+  character_info json DEFAULT NULL,
+  PRIMARY KEY(player_discord_id)
+);
+
+
+
+console.log(makeid());
