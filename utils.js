@@ -428,7 +428,7 @@ module.exports = {
 
 			// Check if guild has this role
 			let foundRole = guild.roles.find(role =>
-				role.name.toLowerCase() == newRole;
+				role.name.toLowerCase() == newRole
 			);
 
 			if (foundRole) {
@@ -437,7 +437,7 @@ module.exports = {
 				} else {
 					// Check if guild member already has this role
 					let memberRole = member.roles.find(role =>
-						role.name.toLowerCase() == newRole;
+						role.name.toLowerCase() == newRole
 					);
 
 					if (memberRole) {
@@ -1657,7 +1657,7 @@ module.exports = {
 
 	logStreamMessage: function (guild, member, richEmbed) {
 		console.log("Running logStreamMessage!");
-		
+
 		let channel = guild.channels.find(channel =>
 			channel.name === 'stream-addicts'
 		);
