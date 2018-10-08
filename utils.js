@@ -427,18 +427,18 @@ module.exports = {
 			}
 
 			// Check if guild has this role
-			let foundRole = guild.roles.find(function(role) {
-				return role.name.toLowerCase() == newRole;
-			});
+			let foundRole = guild.roles.find(role =>
+				role.name.toLowerCase() == newRole;
+			);
 
 			if (foundRole) {
 				if (config.availableRoles.indexOf(newRole) === -1) {
 					message.reply('you can\'t add **' + foundRole.name + '** role to yourself! :thinking:');
 				} else {
 					// Check if guild member already has this role
-					let memberRole = member.roles.find(function(role) {
-						return role.name.toLowerCase() == newRole;
-					});
+					let memberRole = member.roles.find(role =>
+						role.name.toLowerCase() == newRole;
+					);
 
 					if (memberRole) {
 						message.reply('you already have **' + foundRole.name + '** role!');
@@ -1276,7 +1276,9 @@ module.exports = {
 
 			gamesPlayed = gamesPlayed.slice(0, 5);
 
-			var channel = guild.channels.find('name', 'bonobot-bonanza');
+			var channel = guild.channels.find(channel =>
+				channel.name === 'bonobot-bonanza'
+			);
 			// Do nothing if the channel wasn't found on this server
 			if (!channel) {
 				console.log("\nERROR: logMostPlayedGames channel not found!!!\n");
@@ -1394,7 +1396,9 @@ module.exports = {
 
 							var channel = null;
 							if (mention) {
-								channel = guild.channels.find('name', 'announcements');
+								channel = guild.channels.find(channel =>
+									channel.name === 'announcements'
+								);
 
 								// Assign top members
 								config.topMembers.text = textTop[0].username;
@@ -1601,7 +1605,9 @@ module.exports = {
 	},
 
 	logMemes: function (guild, richEmbed) {
-		var memeChannel = guild.channels.find('name', 'memeville');
+		var memeChannel = guild.channels.find(channel =>
+			channel.name === 'memeville'
+		);
 		// var memeChannel = guild.channels.find('name', 'snax-bonobot');
 		if (!memeChannel) {
 			console.log("ERR: MEME CHANNEL NOT FOUND");
@@ -1651,7 +1657,11 @@ module.exports = {
 
 	logStreamMessage: function (guild, member, richEmbed) {
 		console.log("Running logStreamMessage!");
-		let channel = guild.channels.find('name', 'stream-addicts');
+		
+		let channel = guild.channels.find(channel =>
+			channel.name === 'stream-addicts'
+		);
+
 		if (!channel) {
 			console.log("ERR: STREAM CHANNEL NOT FOUND");
 			return;
@@ -1729,7 +1739,9 @@ module.exports = {
 		let racers = []; // Members that joined the race
 		let players = JSON.parse(JSON.stringify(shuffle(config.racePlayers)));
 		
-		let channel = guild.channels.find('name', 'bonobot-bonanza');
+		let channel = guild.channels.find(channel =>
+			channel.name === 'bonobot-bonanza'
+		);
 		if (!channel) {
 			console.log("ERROR: bonobot-bonanza CHANNEL NOT FOUND");
 			config.raceInProgress = false;
@@ -2001,7 +2013,10 @@ module.exports = {
 		};
 
 
-		let channel = guild.channels.find('name', 'bonobot-bonanza');
+		let channel = guild.channels.find(channel =>
+			channel.name === 'bonobot-bonanza'
+		);
+		
 		if (!channel) {
 			console.log("ERROR: bonobot-bonanza CHANNEL NOT FOUND");
 			config.raceInProgress = false;

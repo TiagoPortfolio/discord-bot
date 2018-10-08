@@ -439,8 +439,8 @@ client.on('guildMemberAdd', member => {
 	console.log("****** USER JOINED ******");
 	if (member.user.username.indexOf('(tag)') !== -1) {
 		member.ban()
-	  	.then(() => console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***'))
-	  	.catch(console.error);
+		.then(() => console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***'))
+		.catch(console.error);
 	} else {
 	  var date = new Date();
 	  var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
@@ -473,7 +473,9 @@ client.on('guildMemberAdd', member => {
 		// Add Initiate role
 		member.addRole('301249217488486410');
 
-		const channel = guild.channels.find('name', 'general-chat');
+		const channel = guild.channels.find(channel =>
+			channel.name === 'general-chat'
+		);
 		// Do nothing if the channel wasn't found on this server
 		if (!channel) {
 			return;
@@ -499,8 +501,12 @@ client.on('guildMemberRemove', member => {
 	console.log(str);
 	console.log("****** USER LEFT ******");
 
-	const generalChannel = member.guild.channels.find('name', 'general-chat');
-	const botChannel = member.guild.channels.find('name', 'snax-bonobot');
+	const generalChannel = member.guild.channels.find(channel =>
+		channel.name === 'general-chat'
+	);
+	const botChannel = member.guild.channels.find(channel =>
+		channel.name === 'snax-bonobot'
+	);
 
 	// Do nothing if the channel wasn't found on this server
 	if (!botChannel || !generalChannel) {
