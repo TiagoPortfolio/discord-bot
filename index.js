@@ -141,7 +141,7 @@ app.get('/db', function (request, response) {
 client.on('ready', () => {
 	client.user.setActivity('!snax help', {
 		'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-		'type' : 'WACTHING'
+		'type' : 'WATCHING'
 	});
 	guild = client.guilds.get('83034666034003968'); // Get SNAXKREW server
 	while (guild == '' && !guild.available) {
