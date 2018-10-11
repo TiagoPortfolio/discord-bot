@@ -29,7 +29,7 @@ app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
 
-// Send requests to the app every 28 minutes to keep it alive
+// Send requests to the app every 9 minutes to keep it alive
 // (Heroku app sleeps after 30 minutes of inactivity)
 setInterval(function(){
 	http.get({
@@ -553,6 +553,10 @@ client.on('presenceUpdate', (oldMember, newMember) => {
 			}
 		}
 	}
+});
+
+client.on('error',  error => {
+	console.error(error);
 });
 
 client.login(token);
