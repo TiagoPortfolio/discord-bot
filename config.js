@@ -1,6 +1,6 @@
 var config = {};
 
-config.token = 'MzUyNTU0MjcyMDY1NTg1MTUy.DkdjnA.7EQbWHx0W1WUXOl19kY-ShbvUIA';
+config.token = '';
 
 // Used in processSoundCommand. botAvailable = false if is playing a sound
 config.botAvailable = true;
@@ -123,8 +123,8 @@ config.rankingEmojis = [
 ];
 
 config.topMembers = {
-	'text'		: 'Noon Onyx',
-	'voice' 	: 'Ashjacky',
+	'text'		: 'Smacks',
+	'voice' 	: 'RhodeXLX',
 	'dailies'  	: ['Smacks'],
 	'reputation': ['Feedia']
 };
