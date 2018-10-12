@@ -437,10 +437,16 @@ client.on('guildMemberAdd', member => {
 	console.log("****** USER JOINED ******");
 	console.log(str);
 	console.log("****** USER JOINED ******");
-	if (member.user.username.indexOf('(tag)') !== -1) {
-		member.ban()
-		.then(() => console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***'))
-		.catch(console.error);
+	
+	if (
+		member.user.username.indexOf('(tag)') !== -1 ||
+		member.user.username.indexOf('discord.gg') !== -1
+	) {
+		member.ban(7)
+			.then(() => {
+				console.log('***Banned ' + member.user.username + ' | BOT? ' + member.user.bot + '***');
+			})
+			.catch(console.error);
 	} else {
 	  var date = new Date();
 	  var dateUTC = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
