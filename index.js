@@ -507,10 +507,10 @@ client.on('guildMemberRemove', member => {
 	console.log(str);
 	console.log("****** USER LEFT ******");
 
-	const generalChannel = member.guild.channels.find(channel =>
+	const generalChannel = guild.channels.find(channel =>
 		channel.name === 'general-chat'
 	);
-	const botChannel = member.guild.channels.find(channel =>
+	const botChannel = guild.channels.find(channel =>
 		channel.name === 'snax-bonobot'
 	);
 
@@ -547,6 +547,27 @@ client.on('guildMemberRemove', member => {
 	const memberRole = utils.getMemberRole(member);
 	const message = '**' + member.user.username + "**" + (!Object.keys(memberRole).length ? ' without any activity role ' : " with **" + memberRole.emoji + memberRole.name + "** as highest role ") + "just left the server! <:feelsbadman:284396022682222592>\n" +
 					":skull: R.I.P. " + member.joinedAt.getDate() + " " + member.joinedAt.toLocaleString('en-us', { month: "long" }) + " " + member.joinedAt.getFullYear() + " - " + date.getDate() + " " + date.toLocaleString('en-us', { month: "long" }) + " " + date.getFullYear();
+	botChannel.send(message);
+});
+
+// Log members that were banned
+client.on('guildBanAdd', (guildWhereBanned, user) => {
+	str = JSON.stringify(user, null, 4); // indented output.
+	console.log("****** USER BANNED ******");
+	console.log(str);
+	console.log("****** USER BANNED ******");
+
+	const botChannel = guild.channels.find(channel =>
+		channel.name === 'snax-bonobot'
+	);
+
+	// Do nothing if the channel wasn't found on this server
+	if (!botChannel) {
+		return;
+	}
+		
+	// Log user leaving in bot channel
+	const message = ':hammer:** ' + user.username + ' was banned!';
 	botChannel.send(message);
 });
 
