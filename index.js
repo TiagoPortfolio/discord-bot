@@ -139,13 +139,14 @@ app.get('/db', function (request, response) {
 
 // Only be ready after fetching guild
 client.on('ready', () => {
-	utils.setBotActivity(client.user);
-
+	client.user.setActivity('!snax help', {
+		'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+		'type' : 'WATCHING'
+	});
 	guild = client.guilds.get('83034666034003968'); // Get SNAXKREW server
 	while (guild == '' && !guild.available) {
 		console.log("GUILD NOT AVAILABLE YET");
 	}
-	
 	cron.runCronFunctions(pool, guild, Discord);
 	console.log('Snax-Bonobot is ready!');
 });
