@@ -2246,7 +2246,8 @@ module.exports = {
 				'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
 				'type' : 'WATCHING'
 			});
-		}, 250);
+			console.log(activity);
+		}, 1000);
 	},
 
 	// SNAX CLUB game
