@@ -2233,6 +2233,22 @@ module.exports = {
 		return memberRole;
 	},
 
+	setBotActivity: function (bot) {
+		let activity = '  !snax help  ';
+		bot.setActivity(activity, {
+			'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+			'type' : 'WATCHING'
+		});
+
+		setInterval(() => {
+			activity = activity.slice(-1) + activity.substr(0, activity.length -1);
+			bot.setActivity(activity, {
+				'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+				'type' : 'WATCHING'
+			});
+		}, 250);
+	},
+
 	// SNAX CLUB game
 	// Fight Profile: Level, XP, Games, Wins, Losses, Stats, Abilities
 
