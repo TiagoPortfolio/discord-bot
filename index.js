@@ -139,7 +139,7 @@ app.get('/db', function (request, response) {
 
 // Only be ready after fetching guild
 client.on('ready', () => {
-	client.user.setActivity('!snax help', {
+	client.user.setActivity(' !snax help ', {
 		'url'  : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
 		'type' : 'WATCHING'
 	});
