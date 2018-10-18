@@ -567,7 +567,7 @@ client.on('guildBanAdd', (guildWhereBanned, user) => {
 	}
 		
 	// Log user leaving in bot channel
-	const message = ':hammer:** ' + user.username + ' was banned!';
+	const message = ':hammer:** ' + user.username + '** was banned!';
 	botChannel.send(message);
 });
 
