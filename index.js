@@ -440,7 +440,7 @@ client.on('guildMemberAdd', member => {
 	
 	if (
 		member.user.username.indexOf('(tag)') !== -1 ||
-		member.user.username.indexOf('discord.gg') !== -1
+		member.user.username.indexOf('discord.gg') !== -1 ||
 		member.user.username.indexOf('twitch.tv') !== -1
 	) {
 		member.ban(7)
