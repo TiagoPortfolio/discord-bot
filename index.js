@@ -438,10 +438,11 @@ client.on('guildMemberAdd', member => {
 	console.log(str);
 	console.log("****** USER JOINED ******");
 	
+	// Ban memebers that have url in username to avoid spam
+	let urlRegex = new RegExp(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
 	if (
 		member.user.username.indexOf('(tag)') !== -1 ||
-		member.user.username.indexOf('discord.gg') !== -1 ||
-		member.user.username.indexOf('twitch.tv') !== -1
+		member.user.username.match(urlRegex)
 	) {
 		member.ban(7)
 			.then(() => {
