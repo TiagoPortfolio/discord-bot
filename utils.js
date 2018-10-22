@@ -1235,10 +1235,10 @@ module.exports = {
 		}
 	},
 
-	// Log most played games each 6 hours
-	logMostPlayedGames: function (guild, richEmbed) {
+	// Registers most played games every hour
+	registerMostPlayedGames: function (guild, richEmbed) {
 		// Convert guild members to array
-		var guildMembers = guild.members.array();
+		let guildMembers = guild.members.array();
 		// Ignore members not playing and bots
 		guildMembers = guildMembers.filter(function(member) {
 			return (
@@ -1249,45 +1249,62 @@ module.exports = {
 			);
 		});
 
-		var gamesPlayed = [];
 		guildMembers.forEach(function(member) {
-			var newGame = true;
+			let newGame = true;
 
-			for (var i = 0; i < gamesPlayed.length; i++) {
-				if (gamesPlayed[i].game === member.presence.game.name) {
+			for (let i = 0; i < config.mostPlayedGames.length; i++) {
+				if (config.mostPlayedGames[i].game === member.presence.game.name) {
 					newGame = false;
-					gamesPlayed[i].value += 1;
-					gamesPlayed[i].users += ' | ' + member.user.username;
+
+					if (config.mostPlayedGames[i].users.username.indexOf(member.user.username) === -1) {
+						config.mostPlayedGames[i].users.count += 1;
+						config.mostPlayedGames[i].users.usernames.push(member.user.username);
+					}
 					break;
 				}
 			};
 
 			if (newGame) {
-				gamesPlayed.push({game: member.presence.game.name, value : 1, users: member.user.username});
+				gamesPlayed.push({
+					game: member.presence.game.name,
+					users: {
+						count: 1,
+						usernames: [
+							member.user.username
+						]
+					}
+				});
 			}
 		});
+	},
 
-		if (gamesPlayed.length) {
-			gamesPlayed.sort(function(a, b) {
+	logMostPlayedGamesOfTheDay: function (guild, richEmbed) {
+		if (config.mostPlayedGames.length) {
+			config.mostPlayedGames.sort(function(a, b) {
 				a.gameValue = config.popularGames.indexOf(a.game);
 				b.gameValue = config.popularGames.indexOf(b.game);
-				return b.value - a.value || b.gameValue - a.gameValue;
+				return b.users.count - a.users.count || b.gameValue - a.gameValue;
 			});
 
-			gamesPlayed = gamesPlayed.slice(0, 5);
+			config.mostPlayedGames = config.mostPlayedGames.slice(0, 5);
 
-			var channel = guild.channels.find(channel =>
+			let channel = guild.channels.find(channel =>
 				channel.name === 'bonobot-bonanza'
 			);
 			// Do nothing if the channel wasn't found on this server
 			if (!channel) {
-				console.log("\nERROR: logMostPlayedGames channel not found!!!\n");
+				console.log("\nERROR: logMostPlayedGamesOfTheDay channel not found!!!\n");
 				return;
 			} else {
-				var embed = createMostPlayedGamesEmbed(richEmbed, gamesPlayed);
+				let embed = createMostPlayedGamesEmbed(richEmbed, config.mostPlayedGames);
 				channel.send({
 					embed
-				}).catch(err => console.log(err));
+				})
+					.then(() => {
+						// Clean array
+						config.mostPlayedGames = [];
+					})
+					.catch(err => console.log(err));
 			}
 		}
 	},
@@ -2536,14 +2553,21 @@ function createStatsEmbed(richEmbed, users, type, pointsType) {
 // @param gamesPlayed array(Object)
 function createMostPlayedGamesEmbed(richEmbed, gamesPlayed) {	
 	richEmbed.setColor(0x0074e8);
-	richEmbed.setTitle(':joystick: Most Played Games Right Now :joystick:');
+	richEmbed.setTitle(':joystick: Most Played Games of the Day :joystick:');
 	richEmbed.setDescription('*Based on SNAX Members*');
-	// Add 9 most played games to richEmbed
-	gamesPlayed.forEach(function(element, i){
-		var podium = config.rankingEmojis[i];
+
+	// Useful to print
+	gamesPlayed.forEach((element, i) => {
+		let podium = config.rankingEmojis[i];
+		let usernames = element.users.usernames.shift();
+
+		element.users.usernames.forEach((username, i) => {
+			usernames += ' | ' + username;
+		});
+
 		richEmbed.addField(
-			podium + ' ' + element.game + ' ( ' + element.value + ' Player' + (element.value > 1 ? 's' : '') + ' )',
-			'```css\n' + element.users + '```', true
+			podium + ' ' + element.game + ' ( ' + element.value + ' Player' + (element.users.count > 1 ? 's' : '') + ' )',
+			'```css\n' + usernames + '```', true
 		);
 	});
 

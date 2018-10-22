@@ -14,22 +14,12 @@ module.exports = {
 				nextDate.setHours(1);
 			}
 
-			// Calls utils.logTopOfTheMonth every day
+			// Calls utils.logTopOfTheMonth and utils.logMostPlayedGamesOfTheDay every day
 			nextDate = cleanDate(nextDate);
 			var difference = nextDate - new Date();
 			setTimeout(function() {
 				callEveryDay(pool, guild, discord); // callEveryDay at 1AM UTC
 			}, difference);
-
-			// Call utils.logMostPlayedGames every 6 hours
-			nextDate = new Date();
-			var hourDifference = nextDate.getHours() % 6;
-			nextDate.setHours(nextDate.getHours() + (6 - hourDifference));
-			nextDate = cleanDate(nextDate);
-			var difference = nextDate - new Date();
-			setTimeout(function() {
-				callEverySixHours(guild, discord);
-			}, difference); // callEverySixHours
 
 			// Call utils.logMemes every 12 hours
 			nextDate = new Date();
@@ -40,6 +30,16 @@ module.exports = {
 			setTimeout(function() {
 				callEveryTwelveHours(guild, discord);
 			}, difference); // callEveryTwelveHours
+
+			// Call utils.registerMostPlayedGames every hour
+			nextDate = new Date();
+			var hourDifference = nextDate.getHours() % 1;
+			nextDate.setHours(nextDate.getHours() + (1 - hourDifference));
+			nextDate = cleanDate(nextDate);
+			var difference = nextDate - new Date();
+			setTimeout(function() {
+				callEveryHour(guild, discord);
+			}, difference); // callEverySixHours
 
 			// Call utils.updateVoicePoints every minute
 			nextDate = new Date();
@@ -56,17 +56,11 @@ module.exports = {
 // Calls utils.logTopOfTheMonth every day
 function callEveryDay(pool, guild, discord) {
 	utils.logTopOfTheMonth(pool, guild, true, new discord.RichEmbed(), new discord.RichEmbed());
+	utils.logMostPlayedGamesOfTheDay(guild, new discord.RichEmbed());
 	setInterval(function() {
-		utils.logTopOfTheMonth(pool, guild, true, new discord.RichEmbed(), new discord.RichEmbed());   	
+		utils.logTopOfTheMonth(pool, guild, true, new discord.RichEmbed(), new discord.RichEmbed());
+		utils.logMostPlayedGamesOfTheDay(guild, new discord.RichEmbed());
 	}, 1000 * 60 * 60 * 24);
-}
-
-// Calls utils.logMostPlayedGames every 6 hours
-function callEverySixHours(guild, discord) {
-	utils.logMostPlayedGames(guild, new discord.RichEmbed());
-	setInterval(function() {
-		utils.logMostPlayedGames(guild, new discord.RichEmbed());
-	}, 1000 * 60 * 60 * 6);
 }
 
 // Calls utils.logMemes every 12 hours
@@ -75,6 +69,14 @@ function callEveryTwelveHours(guild, discord) {
 	setInterval(function() {
 		utils.logMemes(guild, new discord.RichEmbed());
 	}, 1000 * 60 * 60 * 12);
+}
+
+// Calls utils.registerMostPlayedGames every hour
+function callEveryHour(guild, discord) {
+	utils.registerMostPlayedGames(guild, new discord.RichEmbed());
+	setInterval(function() {
+		utils.registerMostPlayedGames(guild, new discord.RichEmbed());
+	}, 1000 * 60 * 60);
 }
 
 // Calls utils.updateVoicePoints every minute

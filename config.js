@@ -70,6 +70,8 @@ config.availableRoles = [
 	'fapper',
 ];
 
+config.mostPlayedGames = [];
+
 config.popularGames = [
 	'osu!',
 	'War Thunder',
