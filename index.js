@@ -442,6 +442,7 @@ client.on('guildMemberAdd', member => {
 	let urlRegex = new RegExp(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
 	if (
 		member.user.username.indexOf('(tag)') !== -1 ||
+		member.user.username.indexOf('senseibin') !== -1 || // Spamming user
 		member.user.username.match(urlRegex)
 	) {
 		member.ban(7)
