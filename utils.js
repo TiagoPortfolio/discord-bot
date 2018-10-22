@@ -1265,7 +1265,7 @@ module.exports = {
 			};
 
 			if (newGame) {
-				gamesPlayed.push({
+				config.mostPlayedGames.push({
 					game: member.presence.game.name,
 					users: {
 						count: 1,
@@ -2559,8 +2559,19 @@ function createMostPlayedGamesEmbed(richEmbed, gamesPlayed) {
 	// Useful to print
 	gamesPlayed.forEach((element, i) => {
 		let podium = config.rankingEmojis[i];
-		let usernames = element.users.usernames.shift();
 
+		element.users.usernames.sort(function(a, b){
+			let usernameA = a.toLowerCase(), usernameB = b.toLowerCase();
+			if (usernameA < usernameB) { //sort string ascending
+				return -1;
+			}
+			if (usernameA > usernameB) {
+				return 1;
+			}
+			return 0; //default return value (no sorting)
+		});
+
+		let usernames = element.users.usernames.shift();
 		element.users.usernames.forEach((username, i) => {
 			usernames += ' | ' + username;
 		});
