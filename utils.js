@@ -1256,7 +1256,7 @@ module.exports = {
 				if (config.mostPlayedGames[i].game === member.presence.game.name) {
 					newGame = false;
 
-					if (config.mostPlayedGames[i].users.username.indexOf(member.user.username) === -1) {
+					if (config.mostPlayedGames[i].users.usernames.indexOf(member.user.username) === -1) {
 						config.mostPlayedGames[i].users.count += 1;
 						config.mostPlayedGames[i].users.usernames.push(member.user.username);
 					}
@@ -1402,7 +1402,7 @@ module.exports = {
 								return parseInt(b.reputation) - parseInt(a.reputation);
 							});
 							var reputationTop = res.rows;
-							for (var i = 1; i < reputationTop.length; i++) {
+							for (var i = 1; i < reputationTop.length;	 i++) {
 								if (reputationTop[i-1].reputation == reputationTop[i].reputation) {
 									continue;
 								} else {
