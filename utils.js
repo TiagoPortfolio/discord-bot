@@ -1276,6 +1276,9 @@ module.exports = {
 				});
 			}
 		});
+
+		console.log("config.mostPlayedGames: ");
+		console.log(JSON.stringify(config.mostPlayedGames, null, 4));
 	},
 
 	logMostPlayedGamesOfTheDay: function (guild, richEmbed) {

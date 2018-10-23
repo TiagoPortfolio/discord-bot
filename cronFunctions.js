@@ -39,7 +39,7 @@ module.exports = {
 			var difference = nextDate - new Date();
 			setTimeout(function() {
 				callEveryHour(guild, discord);
-			}, difference); // callEverySixHours
+			}, difference); // callEveryHour
 
 			// Call utils.updateVoicePoints every minute
 			nextDate = new Date();
