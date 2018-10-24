@@ -2580,7 +2580,7 @@ function createMostPlayedGamesEmbed(richEmbed, gamesPlayed) {
 		});
 
 		richEmbed.addField(
-			podium + ' ' + element.game + ' ( ' + element.value + ' Player' + (element.users.count > 1 ? 's' : '') + ' )',
+			podium + ' ' + element.game + ' ( ' + element.users.count + ' Player' + (element.users.count > 1 ? 's' : '') + ' )',
 			'```css\n' + usernames + '```', true
 		);
 	});

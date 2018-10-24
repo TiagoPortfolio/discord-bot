@@ -38,8 +38,8 @@ module.exports = {
 			nextDate = cleanDate(nextDate);
 			var difference = nextDate - new Date();
 			setTimeout(function() {
-				callEveryHour(guild, discord);
-			}, difference); // callEveryHour
+				callEveryTenMinutes(guild, discord);
+			}, difference); // callEveryTenMinutes
 
 			// Call utils.updateVoicePoints every minute
 			nextDate = new Date();
@@ -71,12 +71,12 @@ function callEveryTwelveHours(guild, discord) {
 	}, 1000 * 60 * 60 * 12);
 }
 
-// Calls utils.registerMostPlayedGames every hour
-function callEveryHour(guild, discord) {
+// Calls utils.registerMostPlayedGames every 10 minutes
+function callEveryTenMinutes(guild, discord) {
 	utils.registerMostPlayedGames(guild, new discord.RichEmbed());
 	setInterval(function() {
 		utils.registerMostPlayedGames(guild, new discord.RichEmbed());
-	}, 1000 * 60 * 60);
+	}, 1000 * 60 * 10);
 }
 
 // Calls utils.updateVoicePoints every minute
