@@ -1276,9 +1276,6 @@ module.exports = {
 				});
 			}
 		});
-
-		console.log("config.mostPlayedGames: ");
-		console.log(JSON.stringify(config.mostPlayedGames, null, 4));
 	},
 
 	logMostPlayedGamesOfTheDay: function (guild, richEmbed) {
@@ -1289,7 +1286,7 @@ module.exports = {
 				return b.users.count - a.users.count || b.gameValue - a.gameValue;
 			});
 
-			config.mostPlayedGames = config.mostPlayedGames.slice(0, 5);
+			config.mostPlayedGames = config.mostPlayedGames.slice(0, 10);
 
 			let channel = guild.channels.find(channel =>
 				channel.name === 'bonobot-bonanza'
