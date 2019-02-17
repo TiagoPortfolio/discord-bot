@@ -14,7 +14,7 @@ config.hangmanInProgress = false;
 // Available sounds
 config.sounds = [
 	'ahah', 'ahgay', 'applepen', 'babywaa', 'badfeeling', 'bamboozled', 'beatdrop', 'beatdrop2', 'beatdrop3', 'beatdrop4',
-	'birthday', 'bodyvsmind', 'bye', 'cantbelieve', 'cartoon', 'carried', 'champions', 'conga',	'crickets', 'damnson',
+	'birthday', 'bodyvsmind', 'bye', 'cantbelieve', 'cartoon', 'carried', 'champions', 'conga',	'crabrave', 'crickets', 'damnson',
 	'denied', 'dejavu', 'drumroll', 'dundunduunn', 'easy', 'entertained', 'epic', 'existence', 'gameofthrones', 'gas', 'gg', 'goodbye',
 	'goteem', 'hallelujah', 'heartbeat', 'heaven', 'hello', 'hello2', 'hello3', 'heylisten', 'hitme', 'iambad', 'iamdanger', 'iamfine',
 	'iamtheone', 'ifeelgood', 'illbeback', 'jason', 'jesus', 'juggernaut', 'lag', 'lame', 'lame2', 'legendsneverdie', 'legit', 'lying',
