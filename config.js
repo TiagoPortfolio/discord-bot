@@ -102,7 +102,8 @@ config.popularGames = [
 	'PUBG',
 	'MONSTER HUNTER: WORLD',
 	'Atlas Reactor',
-	'Rocket League'
+	'Rocket League',
+	'Apex Legends'
 ];
 
 config.blockedStatus = [

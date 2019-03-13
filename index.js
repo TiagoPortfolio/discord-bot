@@ -244,14 +244,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 		(oldUserChannel !== undefined && oldUserChannel.guild.afkChannelID !== oldUserChannel.id && newUserChannel.guild.afkChannelID === newUserChannel.id))) {
 		// Calculate seconds in voice channel and insert in database
 		if (oldUserSelfMute !== newUserSelfMute) {
-			// console.log("\n-------------------------------------");
-			// console.log("user changed mute state");
-			// console.log(newMember.user.username);
 			muteStateChanged = !muteStateChanged;
-		} else {
-			// console.log("\n-------------------------------------");
-			// console.log("user left voice channel:");
-			// console.log(newMember.user.username);
 		}
 
 	  // Update muted or unmuted timestamp
@@ -334,11 +327,6 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 				
 						// Add total seconds in voice channel at the beginning of the array
 						queryParams.push(totalSeconds);
-						
-						// console.log("UPDATING" + (newUserSelfMute ? ' muted ' : ' unmuted ') + "SECONDS FOR USER: " + newMember.user.username);
-						// console.log("endTimestamp: " + endTimestamp);
-						// console.log("dateUTC (now): " + dateUTC);
-						// console.log("totalSeconds: " + totalSeconds);
 					
 				  client.query(
 					'INSERT INTO users (discord_id, username, discriminator, avatar, characters_count, week, year, ' +
