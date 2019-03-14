@@ -85,6 +85,10 @@ CREATE TABLE snaxclub_players (
   PRIMARY KEY(player_discord_id)
 );
 
+CREATE TABLE users_bananas (
+  player_discord_id bigint NOT NULL,
+  bananas bigint NOT NULL default 0
+)
 
 
 console.log(makeid());
