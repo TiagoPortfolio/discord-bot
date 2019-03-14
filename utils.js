@@ -748,7 +748,7 @@ module.exports = {
                     "INSERT INTO users_bananas " +
                     "VALUES ($1, $2) " +
                     "ON CONFLICT (discord_id, bananas) DO UPDATE SET " +
-                    "bananas = bananas + $2"
+                    "bananas = bananas + $2",
                     [queryParams[0], 5],
                     (err, res) => {
                       if (shouldAbort(err)) {
