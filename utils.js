@@ -1555,10 +1555,11 @@ module.exports = {
     const channel = message.channel;
     let winner = null;
 
+    console.log("Random number:", random);
     if (random > 9) {
       channel
         .send(
-          "A random 🍌 banana appeared! Type `" +
+          "A random 🍌 **banana** appeared! Type `" +
           randomWord +
           "` to get it!"
         )
