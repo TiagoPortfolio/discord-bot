@@ -634,8 +634,7 @@ module.exports = {
 				"size=2048",
 				"width=60&height=60"
 			), // avatar
-			20, // Default number of dailies
-			5 // Default number of bananas
+			20 // Default number of dailies
 		];
 		var time = {
 			hours: 0,
