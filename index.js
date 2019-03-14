@@ -275,7 +275,7 @@ client.on("message", message => {
 				// Register message stats
 				utils.registerMessage(message, pool);
         utils.processMessageReaction(message);
-        utils.processRandomBanan(message, pool);
+        utils.processRandomBanana(message, pool);
 			}
 		}
 	}
