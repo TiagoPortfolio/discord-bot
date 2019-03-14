@@ -759,7 +759,7 @@ module.exports = {
                         "**<:snax:230458568497692673>  |  " +
                         message.author.username +
                         ", you received your <:kfc:296050563374776320> 20 daily SNAX points!**\n" +
-                        "Here is 5 bananas to help you conquer this community of bonobos!"
+                        "**Here is 🍌 5 bananas to help you conquer this community of bonobos!**"
                       );
     
                       client.query("COMMIT", err => {
@@ -1558,7 +1558,7 @@ module.exports = {
     if (random > 9) {
       channel
         .send(
-          "A random banana appeared! Type `" +
+          "A random 🍌 banana appeared! Type `" +
           randomWord +
           "` to get it!"
         )
