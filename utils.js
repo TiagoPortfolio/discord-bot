@@ -1543,7 +1543,7 @@ module.exports = {
 		}
   },
   
-  processRandomBanana: function(message, pool, ) {
+  processRandomBanana: function(message, pool, Discord) {
     const random = Math.floor(Math.random() * 10);
     const randomWords = [
       'mine',
