@@ -1573,6 +1573,7 @@ module.exports = {
             { time: 30000 }
           );
           collector.on("collect", m => {
+            message.delete(1000);
             m.react("🍌");
             winner = m.author.id;
             collector.stop();
@@ -1608,7 +1609,7 @@ module.exports = {
                   "INSERT INTO users_bananas " +
                   "VALUES ($1, $2) " +
                   "ON CONFLICT (discord_id, bananas) DO UPDATE SET " +
-                  "bananas = bananas + $2"
+                  "bananas = users_bananas.bananas + $2",
                   [winner, 1],
                   (err, res) => {
                     if (shouldAbort(err)) {
