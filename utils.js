@@ -747,7 +747,7 @@ module.exports = {
                   client.query(
                     "INSERT INTO users_bananas " +
                     "VALUES ($1, $2) " +
-                    "ON CONFLICT (discord_id, bananas) DO UPDATE SET " +
+                    "ON CONFLICT (discord_id) DO UPDATE SET " +
                     "bananas = users_bananas.bananas + $2",
                     [queryParams[0], 5],
                     (err, res) => {
