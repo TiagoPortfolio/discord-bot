@@ -4357,7 +4357,10 @@ function processHelpCommand(message, command) {
 		helpText += "```\n";
 	}
 
-  const directMessageChannel = message.author.createDM();
+  let directMessageChannel = null;
+  message.author.createDM()
+    .then(channel => directMessageChannel = channel);
+    
 	directMessageChannel.send(helpText);
 
 	helpText = "";
