@@ -1715,7 +1715,7 @@ module.exports = {
         return;
       }
 
-      command.replace("<@" + user.id, ">").trim();
+      command.replace("<@" + user.id + ">").trim();
 
       console.log("final string", command);
       
@@ -1866,7 +1866,7 @@ module.exports = {
       } else { // Return error message
         message.reply(
           createEmbed([
-            ":warning: You need to add a value to own that bonobo!\n!snax @mention1 50`"
+            ":warning: You need to add a value to own that bonobo!\n!snax @mention 50`"
           ])
         );
         return;
