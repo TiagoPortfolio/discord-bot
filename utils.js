@@ -1556,7 +1556,7 @@ module.exports = {
     let winner = null;
 
     console.log("Random number:", random);
-    if (random == 9) {
+    if (random < 9) { // TODO: revert
       channel
         .send(
           "A random 🍌 **banana** appeared! Type `" +
@@ -1570,7 +1570,7 @@ module.exports = {
           const collector = new Discord.MessageCollector(
             channel,
             filter,
-            { time: 30000 }
+            { time: 1000 } // TODO: revert
           );
           collector.on("collect", m => {
             message.delete(1000);
@@ -1579,6 +1579,7 @@ module.exports = {
             collector.stop();
           });
           collector.on("end", collected => {
+            message.delete(1000);
             pool.connect((err, client, done) => {
               const shouldAbort = err => {
                 if (err) {
@@ -4393,22 +4394,22 @@ function processHelpCommand(message, command) {
           "\n*(You need to be in same voice channel where the bot is playing the sound)*\n\n";
       }
     
-      if (command === "club" || command === "all") {
-        helpText +=
-          "\n:no_entry: **SNAX CLUB Command** :no_entry:\n *Create your character and fight against other SNAXKREW members!*\n";
-        helpText += "```\n";
-        helpText += "!snax club create\n";
-        helpText += "```\n";
-        helpText += "Challenge other members:\n";
-        helpText += "```\n";
-        helpText += ".fight @mention1\n";
-        helpText += "```\n";
-        helpText += "view other members characters:\n";
-        helpText += "```\n";
-        helpText += "!snax club @mention1\n";
-        helpText += "```\n";
-        helpText += "\n";
-      }
+      // if (command === "club" || command === "all") {
+      //   helpText +=
+      //     "\n:no_entry: **SNAX CLUB Command** :no_entry:\n *Create your character and fight against other SNAXKREW members!*\n";
+      //   helpText += "```\n";
+      //   helpText += "!snax club create\n";
+      //   helpText += "```\n";
+      //   helpText += "Challenge other members:\n";
+      //   helpText += "```\n";
+      //   helpText += ".fight @mention1\n";
+      //   helpText += "```\n";
+      //   helpText += "view other members characters:\n";
+      //   helpText += "```\n";
+      //   helpText += "!snax club @mention1\n";
+      //   helpText += "```\n";
+      //   helpText += "\n";
+      // }
 
       channel.send(helpText);
     });
