@@ -1718,6 +1718,8 @@ module.exports = {
 
       command.replace("<@" + bigInt(user.id) + ">").trim();
 
+      console.log("BIG INT", bigInt(user.id));
+      console.log("string concat", "<@" + bigInt(user.id) + ">");
       console.log("final string", command);
       
       // Check if auctionValue is an int
