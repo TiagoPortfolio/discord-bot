@@ -1556,7 +1556,7 @@ module.exports = {
     let winner = null;
 
     console.log("Random number:", random);
-    if (random < 9) { // TODO: revert
+    if (random == 9) {
       channel
         .send(
           "A random 🍌 **banana** appeared! Type `" +
@@ -1570,7 +1570,7 @@ module.exports = {
           const collector = new Discord.MessageCollector(
             channel,
             filter,
-            { time: 1000 } // TODO: revert
+            { time: 30000 }
           );
           collector.on("collect", m => {
             message.delete(1000);
@@ -1580,56 +1580,58 @@ module.exports = {
           });
           collector.on("end", collected => {
             message.delete(1000);
-            pool.connect((err, client, done) => {
-              const shouldAbort = err => {
-                if (err) {
-                  console.error(
-                    "Error in transaction processRandomBanana",
-                    err.stack
-                  );
-                  client.query("ROLLBACK", err => {
-                    if (err) {
-                      console.error(
-                        "Error rolling back client processRandomBanana",
-                        err.stack
-                      );
-                    }
-                    // Release the client back to the pool
-                    done();
-                  });
-                }
-                return !!err;
-              };
-    
-              client.query("BEGIN", err => {
-                if (shouldAbort(err)) {
-                  return;
-                }
-                
-                client.query(
-                  "INSERT INTO users_bananas " +
-                  "VALUES ($1, $2) " +
-                  "ON CONFLICT (discord_id) DO UPDATE SET " +
-                  "bananas = users_bananas.bananas + $2",
-                  [winner, 1],
-                  (err, res) => {
-                    if (shouldAbort(err)) {
-                      return;
-                    }
-                    client.query("COMMIT", err => {
+            if (winner) {
+              pool.connect((err, client, done) => {
+                const shouldAbort = err => {
+                  if (err) {
+                    console.error(
+                      "Error in transaction processRandomBanana",
+                      err.stack
+                    );
+                    client.query("ROLLBACK", err => {
                       if (err) {
                         console.error(
-                          "Error committing transaction",
+                          "Error rolling back client processRandomBanana",
                           err.stack
                         );
                       }
+                      // Release the client back to the pool
                       done();
                     });
                   }
-                );
-              }
-            );
-          });
+                  return !!err;
+                };
+      
+                client.query("BEGIN", err => {
+                  if (shouldAbort(err)) {
+                    return;
+                  }
+                  
+                  client.query(
+                    "INSERT INTO users_bananas " +
+                    "VALUES ($1, $2) " +
+                    "ON CONFLICT (discord_id) DO UPDATE SET " +
+                    "bananas = users_bananas.bananas + $2",
+                    [winner, 1],
+                    (err, res) => {
+                      if (shouldAbort(err)) {
+                        return;
+                      }
+                      client.query("COMMIT", err => {
+                        if (err) {
+                          console.error(
+                            "Error committing transaction",
+                            err.stack
+                          );
+                        }
+                        done();
+                      });
+                    }
+                  );
+                }
+              );
+              });
+            }
         });
       });
     }
