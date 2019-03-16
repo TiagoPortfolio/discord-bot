@@ -4357,62 +4357,61 @@ function processHelpCommand(message, command) {
 		helpText += "```\n";
 	}
 
-  let directMessageChannel = null;
   message.author.createDM()
-    .then(channel => directMessageChannel = channel);
+    .then(channel => {
+      channel.send(helpText);
+
+      helpText = "";
     
-	directMessageChannel.send(helpText);
+      if (command === "playing" || command === "all") {
+        helpText +=
+          "\n:joystick: **Playing Command** :joystick:\n *See what members are playing a specific game!*\n";
+        helpText += "```\n";
+        helpText += ".playing Atlas Reactor\n";
+        helpText += "```\n";
+      }
+    
+      if (command === "race" || command === "all") {
+        helpText +=
+          "\n:race_car: **Race Game** :race_car:\n *Compete in a race with your friends!*\nTo start the race:";
+        helpText += "```\n";
+        helpText += ".race\n";
+        helpText += "```\n";
+        helpText += "To join the race:\n";
+        helpText += "```\n";
+        helpText += ".join\n";
+        helpText += "```\n";
+      }
+    
+      if (command === "stop" || command === "all") {
+        helpText +=
+          "\n:no_entry: **Stop Command** :no_entry:\n *Stop playing my annoying long sounds!*\n";
+        helpText += "```\n";
+        helpText += ".stop\n";
+        helpText += "```\n";
+        helpText +=
+          "\n*(You need to be in same voice channel where the bot is playing the sound)*\n\n";
+      }
+    
+      if (command === "club" || command === "all") {
+        helpText +=
+          "\n:no_entry: **SNAX CLUB Command** :no_entry:\n *Create your character and fight against other SNAXKREW members!*\n";
+        helpText += "```\n";
+        helpText += "!snax club create\n";
+        helpText += "```\n";
+        helpText += "Challenge other members:\n";
+        helpText += "```\n";
+        helpText += ".fight @mention1\n";
+        helpText += "```\n";
+        helpText += "view other members characters:\n";
+        helpText += "```\n";
+        helpText += "!snax club @mention1\n";
+        helpText += "```\n";
+        helpText += "\n";
+      }
 
-	helpText = "";
-
-	if (command === "playing" || command === "all") {
-		helpText +=
-			"\n:joystick: **Playing Command** :joystick:\n *See what members are playing a specific game!*\n";
-		helpText += "```\n";
-		helpText += ".playing Atlas Reactor\n";
-		helpText += "```\n";
-	}
-
-	if (command === "race" || command === "all") {
-		helpText +=
-			"\n:race_car: **Race Game** :race_car:\n *Compete in a race with your friends!*\nTo start the race:";
-		helpText += "```\n";
-		helpText += ".race\n";
-		helpText += "```\n";
-		helpText += "To join the race:\n";
-		helpText += "```\n";
-		helpText += ".join\n";
-		helpText += "```\n";
-	}
-
-	if (command === "stop" || command === "all") {
-		helpText +=
-			"\n:no_entry: **Stop Command** :no_entry:\n *Stop playing my annoying long sounds!*\n";
-		helpText += "```\n";
-		helpText += ".stop\n";
-		helpText += "```\n";
-		helpText +=
-			"\n*(You need to be in same voice channel where the bot is playing the sound)*\n\n";
-	}
-
-	if (command === "club" || command === "all") {
-		helpText +=
-			"\n:no_entry: **SNAX CLUB Command** :no_entry:\n *Create your character and fight against other SNAXKREW members!*\n";
-		helpText += "```\n";
-		helpText += "!snax club create\n";
-		helpText += "```\n";
-		helpText += "Challenge other members:\n";
-		helpText += "```\n";
-		helpText += ".fight @mention1\n";
-		helpText += "```\n";
-		helpText += "view other members characters:\n";
-		helpText += "```\n";
-		helpText += "!snax club @mention1\n";
-		helpText += "```\n";
-		helpText += "\n";
-	}
-
-	directMessageChannel.send(helpText);
+      channel.send(helpText);
+    });
 }
 
 // Gets week of the year
