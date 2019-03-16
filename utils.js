@@ -1697,11 +1697,14 @@ module.exports = {
     // Removes 'own' at the start and whitespaces at the start and end
 		command = command.substring(3).trim();
     
-    console.log("message content", message.content);
+    console.log("mentions", message.mentions.users);
+    console.log("mentions", message.mentions.users.first());
     
     if (typeof message.mentions.users.first() === "undefined") {
       const user = message.mentions.users.first();
-      command.replace("@" + user.username, "").trim();
+      command.replace("<@" + user.id, ">").trim();
+
+      console.log("final string", command);
       
       // Check if auctionValue is an int
       if (
@@ -4588,7 +4591,7 @@ function processHelpCommand(message, command) {
         helpText +=
           "\n<:bonobo:274325481833234432> **Own Command** <:bonobo:274325481833234432>\n *Conquer this community of bonobos, own them!*\n";
         helpText += "```\n";
-        helpText += ".own @mention1\n";
+        helpText += "!snax own @mention1\n";
         helpText += "```\n";
       }
     
