@@ -1697,11 +1697,24 @@ module.exports = {
     // Removes 'own' at the start and whitespaces at the start and end
 		command = command.substring(3).trim();
     
-    console.log("mentions", message.mentions.users);
-    console.log("mentions", message.mentions.users.first());
-    
     if (typeof message.mentions.users.first() === "undefined") {
+      message.reply(
+        createEmbed([
+          ":warning: You need to mention someone in the server to own him/her!"
+        ])
+      );
+      return;
+    } else {
       const user = message.mentions.users.first();
+      if (user.id === message.author.id) {
+        message.reply(
+          createEmbed([
+            ":warning: You already own yourself you stupid bonobo!"
+          ])
+        );
+        return;
+      }
+
       command.replace("<@" + user.id, ">").trim();
 
       console.log("final string", command);
@@ -1858,13 +1871,6 @@ module.exports = {
         );
         return;
       }
-    } else {
-      message.reply(
-        createEmbed([
-          ":warning: You need to mention someone in the server to own him/her!"
-        ])
-      );
-      return;
     }
   },
 
