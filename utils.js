@@ -1075,7 +1075,7 @@ module.exports = {
 														"> ";
 												} else {
 													awardMessage +=
-														" <@" + user.id + "> ";
+														" <@" + BigInt(user.id) + "> ";
 												}
 
 												var params = queryParams.slice();
@@ -1715,7 +1715,7 @@ module.exports = {
         return;
       }
 
-      command.replace("<@" + user.id + ">").trim();
+      command.replace("<@" + BigInt(user.id) + ">").trim();
 
       console.log("final string", command);
       
