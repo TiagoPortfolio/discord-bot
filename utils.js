@@ -1716,7 +1716,7 @@ module.exports = {
         return;
       }
 
-      command.replace("<@" + bigInt(user.id) + ">").trim();
+      command.replace("<@" + bigInt(user.id) + ">", "").trim();
 
       console.log("BIG INT", bigInt(user.id));
       console.log("string concat", "<@" + bigInt(user.id) + ">");
