@@ -4357,7 +4357,8 @@ function processHelpCommand(message, command) {
 		helpText += "```\n";
 	}
 
-	message.channel.send(helpText);
+  const directMessageChannel = message.author.createDM();
+	directMessageChannel.send(helpText);
 
 	helpText = "";
 
@@ -4383,7 +4384,7 @@ function processHelpCommand(message, command) {
 
 	if (command === "stop" || command === "all") {
 		helpText +=
-			"\n:stop: **Stop Command** :stop:\n *Stop playing my annoying long sounds!*\n";
+			"\n:no_entry: **Stop Command** :no_entry:\n *Stop playing my annoying long sounds!*\n";
 		helpText += "```\n";
 		helpText += ".stop\n";
 		helpText += "```\n";
@@ -4393,7 +4394,7 @@ function processHelpCommand(message, command) {
 
 	if (command === "club" || command === "all") {
 		helpText +=
-			"\n:stop: **SNAX CLUB Command** :stop:\n *Create your character and fight against other SNAXKREW members!*\n";
+			"\n:no_entry: **SNAX CLUB Command** :no_entry:\n *Create your character and fight against other SNAXKREW members!*\n";
 		helpText += "```\n";
 		helpText += "!snax club create\n";
 		helpText += "```\n";
@@ -4408,7 +4409,7 @@ function processHelpCommand(message, command) {
 		helpText += "\n";
 	}
 
-	message.channel.send(helpText);
+	directMessageChannel.send(helpText);
 }
 
 // Gets week of the year
