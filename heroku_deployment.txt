@@ -86,8 +86,9 @@ CREATE TABLE snaxclub_players (
 );
 
 CREATE TABLE users_bananas (
-  player_discord_id bigint NOT NULL,
-  bananas bigint NOT NULL default 0
+  discord_id bigint NOT NULL,
+  bananas bigint NOT NULL default 0,
+  price bigint NOT NULL default 0,
 )
 
 

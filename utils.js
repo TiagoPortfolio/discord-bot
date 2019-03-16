@@ -1677,6 +1677,194 @@ module.exports = {
 		}
 	},
 
+  processOwnCommand(message, command, pool) {
+    if (
+			message.channel.name !== "bonobot-bonanza" &&
+			message.channel.name !== "snax-bonobot"
+		) {
+			//Send error message
+			message.reply(
+				createEmbed([
+					":warning: Please run own command in #bonobot-bonanza channel to avoid spam."
+				])
+			);
+			return;
+		} else if (message.content.trim().indexOf("help") !== -1) {
+      processHelpCommand(message, "own");
+			return;
+    }
+
+    // Removes 'own' at the start and whitespaces at the start and end
+		command = command.substring(3).trim();
+    
+    console.log("message content", message.content);
+    
+    if (typeof message.mentions.users.first() === "undefined") {
+      const user = message.mentions.users.first();
+      command.replace("@" + user.username, "").trim();
+      
+      // Check if auctionValue is an int
+      if (
+				typeof parseInt(command) === "number" &&
+				parseInt(command) % 1 === 0
+			) {
+        const auctionValue = command;
+
+        pool.connect((err, client, done) => {
+          const shouldAbort = err => {
+            if (err) {
+              console.error(
+                "Error in transaction in processRepCommand",
+                err.stack
+              );
+              client.query("ROLLBACK", err => {
+                if (err) {
+                  console.error(
+                    "Error in rolling back client in processRepCommand",
+                    err.stack
+                  );
+                }
+                // Release the client back to the pool
+                done();
+              });
+            }
+            return !!err;
+          };
+  
+          client.query("BEGIN", err => {
+            if (shouldAbort(err)) {
+              return;
+            }
+  
+            // Check if user has enough bananas
+            client.query(
+              "SELECT bananas " +
+              "FROM users_bananas " +
+              "WHERE discord_id = $1 ",
+              [auctionValue, message.author.id],
+              (err, res) => {
+                if (shouldAbort(err)) {
+                  message.reply(
+                    createEmbed([":boom: An error occurred!"])
+                  );
+                  return;
+                } else {
+                  const bananas = res.rows[0].bananas;
+
+                  // Transaction can proceed
+                  if (auctionValue <= bananas) {
+                    // Check if user made a minimum bid amount
+                    client.query(
+                      "SELECT price " +
+                      "FROM users_bananas " +
+                      "WHERE discord_id = $1 ",
+                      [user.id],
+                      (err, res) => {
+                        if (shouldAbort(err)) {
+                          message.reply(
+                            createEmbed([":boom: An error occurred!"])
+                          );
+                          return;
+                        } else if (res.rows.length === 0) {
+                          // Character not created yet
+                          message.reply(
+                            createEmbed([
+                              ":warning: That user does not exists!"
+                            ])
+                          );
+                          return;
+                        } else {
+                          const price = res.rows[0].price;
+        
+                          // Transaction can proceed
+                          if (price < auctionValue) {
+                            client.query(
+                              "UPDATE users_bananas " +
+                              "SET price = $1" +
+                              "WHERE discord_id = $2 ",
+                              [auctionValue, user.id],
+                              (err, res) => {
+                                if (shouldAbort(err)) {
+                                  message.reply(
+                                    createEmbed([":boom: An error occurred!"])
+                                  );
+                                  return;
+                                } else {
+                                  client.query(
+                                    "UPDATE users_bananas " +
+                                    "SET bananas = users_bananas - $1" +
+                                    "WHERE discord_id = $2 ",
+                                    [auctionValue, message.author.id],
+                                    (err, res) => {
+                                      if (shouldAbort(err)) {
+                                        message.reply(
+                                          createEmbed([":boom: An error occurred!"])
+                                        );
+                                        return;
+                                      } else {
+                                        message.reply(
+                                          createEmbed([
+                                            "<:bonobo:274325481833234432> Congratulations, **" + user.username + "** is now your bonobo oficially!"
+                                          ])
+                                        );
+                                      }
+                                    }
+                                  );
+                                  message.reply(
+                                    createEmbed([
+                                      "<:bonobo:274325481833234432> Congratulations, **" + user.username + "** is now your bonobo oficially!"
+                                    ])
+                                  );
+                                }
+                              }
+                            );
+                          } else {
+                            message.reply(
+                              createEmbed([
+                                ":warning: You need to place a higher bid to own the bonobo you dummy!"
+                              ])
+                            );
+                            return;
+                          }
+        
+                          message.channel
+                            .send({
+                              embed
+                            })
+                            .catch(err => console.log(err));
+                        }
+                      }
+                    );
+                  } else {
+                    message.reply(
+                      createEmbed([
+                        "<:bonobo:274325481833234432> You don't have enough bananas you pleb!"
+                      ])
+                    );
+                  }
+                }
+              }
+            );
+          });
+        });
+      } else { // Return error message
+        message.reply(
+          createEmbed([
+            ":warning: You need to add a value to own that bonobo!\n!snax @mention1 50`"
+          ])
+        );
+        return;
+      }
+    } else {
+      message.reply(
+        createEmbed([
+          ":warning: You need to mention someone in the server to own him/her!"
+        ])
+      );
+      return;
+    }
+  },
+
 	processSnaxClubCommand(message, command, pool, richEmbed) {
 		// Removes 'club' at the start and whitespaces at the start and end
 		command = command.substring(4).trim();
@@ -4394,6 +4582,14 @@ function processHelpCommand(message, command) {
         helpText += "```\n";
         helpText +=
           "\n*(You need to be in same voice channel where the bot is playing the sound)*\n\n";
+      }
+
+      if (command === "own" || command === "own") {
+        helpText +=
+          "\n<:bonobo:274325481833234432> **Own Command** <:bonobo:274325481833234432>\n *Conquer this community of bonobos, own them!*\n";
+        helpText += "```\n";
+        helpText += ".own @mention1\n";
+        helpText += "```\n";
       }
     
       // if (command === "club" || command === "all") {

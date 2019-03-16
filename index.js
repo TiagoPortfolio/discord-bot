@@ -229,7 +229,13 @@ client.on("message", message => {
 							pool,
 							new Discord.RichEmbed()
 						);
-					} else {
+					} else if (command.toLowerCase().startsWith("own")) {
+            utils.processOwnCommand(
+              message,
+							command,
+              pool
+            );
+          } else {
 						// Invalid command
 						message.reply(
 							utils.createEmbed([
@@ -827,16 +833,15 @@ client.on("error", error => {
 
 client.login(token);
 
-// pool
-// .query(
-// 	// "TRUNCATE users CASCADE;",
-// 	// 'DROP TABLE users',
-// 	[], (err, res) => {
-// 		if (err) {
-// 			console.log("Error on SELECT: " + err);
-// 			res.send("Error: " + err);
-// 		}
-// });
+pool
+.query(
+	"ALTER TABLE users_bananas ADD COLUMN price bigint NOT NULL default 0;",
+	[], (err, res) => {
+		if (err) {
+			console.log("Error on SELECT: " + err);
+			res.send("Error: " + err);
+		}
+});
 
 // pool
 // .query(
