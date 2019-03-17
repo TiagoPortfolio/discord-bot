@@ -1076,7 +1076,7 @@ module.exports = {
 														"> ";
 												} else {
 													awardMessage +=
-														" <@" + bigInt(user.id) + "> ";
+														" <@" + user.id + "> ";
 												}
 
 												var params = queryParams.slice();
@@ -1716,10 +1716,10 @@ module.exports = {
         return;
       }
 
-      command.replace("<@" + bigInt(user.id) + ">", "").trim();
+      command.replace("<@" + user.id + ">", "").trim();
 
-      console.log("BIG INT", bigInt(user.id));
-      console.log("string concat", "<@" + bigInt(user.id) + ">");
+      console.log("BIG INT", user.id);
+      console.log("string concat", "<@" + user.id + ">");
       console.log("final string", command);
       
       // Check if auctionValue is an int
