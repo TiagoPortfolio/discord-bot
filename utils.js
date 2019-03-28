@@ -1720,7 +1720,6 @@ module.exports = {
       }
 
       command = command.slice(command.indexOf('>') + 1, command.length).trim();
-      bi
       console.log("final string", command);
 
       // Check if auctionValue is an int
