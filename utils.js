@@ -1791,10 +1791,9 @@ module.exports = {
                         } else if (
                           res.rows.length === 0
                         ) {
-                          // Character not created yet
                           message.reply(
                             createEmbed([
-                              ":warning: That user does not exists!"
+                              ":warning: That bonobo is invalid, choose another one!"
                             ])
                           );
                           return;
@@ -1875,14 +1874,6 @@ module.exports = {
                             );
                             return;
                           }
-
-                          message.channel
-                            .send({
-                              embed
-                            })
-                            .catch(err =>
-                              console.log(err)
-                            );
                         }
                       }
                     );
